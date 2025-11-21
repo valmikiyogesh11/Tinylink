@@ -1,0 +1,64 @@
+/* TinyLink custom styling on top of Tailwind */
+
+.nav-link {
+  @apply px-3 py-1 rounded-full border border-transparent text-slate-300 hover:text-slate-50 hover:border-slate-600 text-xs;
+}
+
+.form-label {
+  @apply text-xs font-medium text-slate-200;
+}
+
+.form-input {
+  @apply w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-xs text-slate-100 outline-none ring-0 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 placeholder:text-slate-500;
+}
+
+.form-help-text {
+  @apply text-[0.7rem] text-slate-500;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-400 px-4 py-2 text-xs font-medium text-slate-950 shadow-md shadow-sky-900/30 transition hover:brightness-110 disabled:opacity-60 disabled:cursor-wait;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-1.5 text-xs font-medium text-slate-200 hover:bg-slate-800 hover:border-slate-500 transition;
+}
+
+.table-th {
+  @apply px-3 py-2 text-left font-medium;
+}
+
+.table-td {
+  @apply px-3 py-3 align-middle;
+}
+
+.table-row {
+  @apply hover:bg-slate-900/80 transition;
+}
+
+.stat-card {
+  @apply bg-slate-900/70 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between gap-2;
+}
+
+.stat-label {
+  @apply text-[0.7rem] uppercase tracking-wide text-slate-500;
+}
+
+.stat-value {
+  @apply text-sm text-slate-100;
+}
+
+.stat-sub {
+  @apply text-[0.65rem];
+}
+
+/* Toasts */
+.toast {
+  @apply px-3 py-2 rounded-xl border text-xs shadow-md flex items-center gap-2;
+}
+.toast-success {
+  @apply bg-emerald-500/10 border-emerald-500/40 text-emerald-200;
+}
+.toast-error {
+  @apply bg-rose-500/10 border-rose-500/40 text-rose-200;
+}

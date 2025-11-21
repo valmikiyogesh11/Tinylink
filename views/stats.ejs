@@ -1,0 +1,75 @@
+<% layout('layout') -%>
+
+<section class="space-y-6">
+  <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-50 flex items-center gap-2">
+        Stats for
+        <span class="font-mono text-indigo-300 bg-slate-900 border border-slate-700 rounded-xl px-2 py-1 text-base">
+          /<%= link.code %>
+        </span>
+      </h1>
+      <p class="text-xs text-slate-400 mt-1 max-w-xl">
+        Detailed analytics for this short link. Use this page to verify your redirect and click tracking.
+      </p>
+    </div>
+    <div class="flex gap-2 text-xs text-slate-400">
+      <a href="/" class="btn-ghost">← Back to dashboard</a>
+    </div>
+  </header>
+
+  <section class="grid gap-4 sm:grid-cols-3">
+    <div class="stat-card">
+      <div class="stat-label">Short URL</div>
+      <div class="stat-value text-xs sm:text-sm break-all">
+        <a href="/<%= link.code %>" target="_blank" class="text-sky-300 hover:text-sky-200">
+          <%= baseUrl %>/<%= link.code %>
+        </a>
+      </div>
+      <button
+        type="button"
+        class="btn-ghost mt-2 text-[0.7rem] copy-btn"
+        data-url="<%= baseUrl %>/<%= link.code %>"
+      >
+        Copy short URL
+      </button>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Total clicks</div>
+      <div class="stat-value text-2xl font-semibold text-slate-50">
+        <%= link.total_clicks %>
+      </div>
+      <div class="stat-sub text-[0.7rem] text-slate-500">
+        Increments on every successful redirect.
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Last clicked</div>
+      <div class="stat-value text-sm">
+        <% if (link.last_clicked_at) { %>
+          <%= new Date(link.last_clicked_at).toLocaleString() %>
+        <% } else { %>
+          <span class="text-slate-500 text-xs">Never clicked yet.</span>
+        <% } %>
+      </div>
+      <div class="stat-sub text-[0.7rem] text-slate-500">
+        Try opening the short URL in a new tab, then refresh this page.
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate-900/70 border border-slate-800 rounded-2xl shadow-md shadow-slate-950/60 p-4 sm:p-5 space-y-3">
+    <h2 class="text-sm font-semibold text-slate-100 flex items-center gap-2">
+      <span class="h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-[0.65rem]">↗</span>
+      Destination URL
+    </h2>
+    <p class="text-xs text-slate-400 mb-1">
+      This is the exact URL TinyLink will redirect to.
+    </p>
+    <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-[0.75rem] text-slate-100 break-all">
+      <%= link.target_url %>
+    </div>
+  </section>
+</section>

@@ -1,0 +1,193 @@
+<% layout('layout') -%>
+
+<section class="space-y-6">
+  <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-50">
+        Your Tiny Links
+      </h1>
+      <p class="text-sm text-slate-400 mt-1 max-w-xl">
+        Create short, memorable URLs and track their performance in one clean, responsive dashboard.
+      </p>
+    </div>
+    <div class="flex gap-2 text-xs text-slate-400">
+      <div class="px-3 py-2 rounded-xl border border-slate-800 bg-slate-900/60">
+        <div class="text-[0.65rem] uppercase tracking-wide text-slate-500">Total links</div>
+        <div class="text-sm font-medium text-slate-50"><%= stats.totalLinks %></div>
+      </div>
+      <div class="px-3 py-2 rounded-xl border border-slate-800 bg-slate-900/60">
+        <div class="text-[0.65rem] uppercase tracking-wide text-slate-500">Total clicks</div>
+        <div class="text-sm font-medium text-slate-50"><%= stats.totalClicks %></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Create link card -->
+  <section class="bg-slate-900/70 border border-slate-800 rounded-2xl shadow-md shadow-slate-950/60 p-4 sm:p-5 space-y-3">
+    <h2 class="text-sm font-semibold text-slate-100 flex items-center gap-2">
+      <span class="h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-[0.65rem]">+</span>
+      Create a new short link
+    </h2>
+    <p class="text-xs text-slate-400">
+      Paste any long URL, optionally pick your own short code, and TinyLink will do the rest.
+    </p>
+
+    <form id="create-link-form" class="space-y-3">
+      <div class="space-y-2">
+        <label class="form-label" for="targetUrl">Target URL</label>
+        <input
+          id="targetUrl"
+          name="targetUrl"
+          type="url"
+          placeholder="https://example.com/really/long/path?with=query&params=true"
+          required
+          class="form-input"
+        />
+        <p class="form-help-text">
+          Must start with <code>http://</code> or <code>https://</code>.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-[max-content,1fr] gap-3 sm:items-center">
+        <div class="space-y-1 text-xs text-slate-400">
+          <p class="font-medium text-slate-200">Custom short code (optional)</p>
+          <p class="text-[0.7rem]">
+            Letters &amp; numbers only, 6–8 characters.
+          </p>
+        </div>
+        <div class="grid grid-cols-[auto,1fr] gap-2 items-center">
+          <div class="text-xs text-slate-400 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 truncate">
+            <span class="text-slate-500 mr-0.5"><%= baseUrl %>/</span>
+          </div>
+          <input
+            id="code"
+            name="code"
+            type="text"
+            minlength="6"
+            maxlength="8"
+            pattern="[A-Za-z0-9]{6,8}"
+            placeholder="myCode1"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3 justify-between pt-1">
+        <div class="text-xs text-slate-400 flex items-center gap-2">
+          <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-[0.65rem]">i</span>
+          <span>
+            We'll auto-generate a smart code if you leave it blank.
+          </span>
+        </div>
+        <button
+          id="create-link-submit"
+          type="submit"
+          class="btn-primary"
+        >
+          <span class="button-label-default">Shorten URL</span>
+          <span class="button-label-loading hidden">Creating…</span>
+        </button>
+      </div>
+
+      <p id="create-link-error" class="text-xs text-rose-400 hidden"></p>
+      <p id="create-link-success" class="text-xs text-emerald-400 hidden"></p>
+    </form>
+  </section>
+
+  <!-- Filter + table -->
+  <section class="space-y-3">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+      <h2 class="text-sm font-semibold text-slate-100 flex items-center gap-2">
+        <span class="h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-[0.65rem]">⧉</span>
+        All links
+      </h2>
+      <div class="flex items-center gap-2">
+        <div class="relative w-full sm:w-64">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Filter by code or URL…"
+            class="form-input pl-8 text-xs"
+          />
+          <span class="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-500">🔍</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60">
+      <% if (links.length === 0) { %>
+        <div class="px-4 py-10 text-center text-sm text-slate-400 space-y-2">
+          <p>No links yet.</p>
+          <p class="text-xs text-slate-500">
+            Your first short link will show up here along with click stats.
+          </p>
+        </div>
+      <% } else { %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-xs border-collapse">
+            <thead class="bg-slate-900/80 border-b border-slate-800 text-[0.7rem] uppercase tracking-wide text-slate-400">
+              <tr>
+                <th class="table-th text-left">Short code</th>
+                <th class="table-th text-left">Target URL</th>
+                <th class="table-th text-center">Clicks</th>
+                <th class="table-th text-left">Last clicked</th>
+                <th class="table-th text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="links-table-body" class="divide-y divide-slate-800">
+              <% links.forEach(function(link) { %>
+                <tr class="table-row" data-code="<%= link.code %>" data-url="<%= link.target_url %>">
+                  <td class="table-td align-top">
+                    <div class="flex flex-col gap-1">
+                      <a
+                        href="/code/<%= link.code %>"
+                        class="inline-flex items-center gap-1 font-mono text-[0.75rem] text-sky-300 hover:text-sky-200"
+                      >
+                        /<%= link.code %>
+                        <span class="text-[0.6rem] uppercase bg-slate-800 rounded px-1.5 py-0.5 text-slate-400">Stats</span>
+                      </a>
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-1 text-[0.7rem] text-slate-400 hover:text-slate-100 copy-btn"
+                        data-url="<%= baseUrl %>/<%= link.code %>"
+                      >
+                        Copy short URL
+                      </button>
+                    </div>
+                  </td>
+                  <td class="table-td align-top max-w-xs sm:max-w-md">
+                    <div class="truncate text-[0.72rem] text-slate-200" title="<%= link.target_url %>">
+                      <%= link.target_url %>
+                    </div>
+                    <div class="text-[0.65rem] text-slate-500 mt-1">
+                      Created <%= new Date(link.created_at).toLocaleString() %>
+                    </div>
+                  </td>
+                  <td class="table-td align-top text-center text-[0.8rem] font-medium text-slate-50">
+                    <%= link.total_clicks %>
+                  </td>
+                  <td class="table-td align-top text-[0.7rem] text-slate-300">
+                    <% if (link.last_clicked_at) { %>
+                      <%= new Date(link.last_clicked_at).toLocaleString() %>
+                    <% } else { %>
+                      <span class="text-slate-500">Never</span>
+                    <% } %>
+                  </td>
+                  <td class="table-td align-top text-right">
+                    <button
+                      type="button"
+                      class="btn-ghost text-[0.7rem] delete-btn"
+                      data-code="<%= link.code %>"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </section>
+</section>

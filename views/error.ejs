@@ -1,0 +1,19 @@
+<% layout('layout') -%>
+
+<section class="flex flex-col items-center justify-center py-10 gap-4 text-center">
+  <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-500/10 border border-rose-500/40 text-rose-300 text-xl">
+    !
+  </div>
+  <div class="space-y-2 max-w-md">
+    <h1 class="text-xl font-semibold text-slate-50">Something went wrong</h1>
+    <p class="text-sm text-slate-400">
+      <%= message %>
+    </p>
+    <% if (details) { %>
+      <p class="text-[0.7rem] text-slate-500 truncate">
+        <code><%= details %></code>
+      </p>
+    <% } %>
+  </div>
+  <a href="/" class="btn-primary text-xs">Back to dashboard</a>
+</section>
