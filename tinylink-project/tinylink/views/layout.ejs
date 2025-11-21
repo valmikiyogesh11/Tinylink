@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TinyLink • Smart URL shortener</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Tailwind CDN for quick styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <header class="border-b border-slate-800 bg-slate-900/70 backdrop-blur">
+      <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+        <a href="/" class="inline-flex items-center gap-2">
+          <div class="h-8 w-8 rounded-xl bg-gradient-to-tr from-indigo-500 via-sky-500 to-emerald-400 shadow-md flex items-center justify-center text-xs font-black tracking-tighter">
+            TL
+          </div>
+          <div class="flex flex-col leading-tight">
+            <span class="font-semibold text-slate-50">TinyLink</span>
+            <span class="text-xs text-slate-400 hidden sm:inline">Minimal URL shortener with stats</span>
+          </div>
+        </a>
+
+        <nav class="flex items-center gap-2 text-xs sm:text-sm">
+          <a href="/" class="nav-link">Dashboard</a>
+          <a href="/healthz" class="nav-link">Health</a>
+          <a href="https://github.com" target="_blank" class="hidden sm:inline text-slate-400 hover:text-slate-100 transition">
+            View code →
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <div class="max-w-5xl mx-auto px-4 py-6 sm:py-8">
+        <%- body %>
+      </div>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950/80 mt-8">
+      <div class="max-w-5xl mx-auto px-4 py-4 text-xs text-slate-500 flex flex-col sm:flex-row gap-1 sm:items-center sm:justify-between">
+        <span>© <%= new Date().getFullYear() %> TinyLink. Built with Node.js, Express & Postgres.</span>
+        <span class="text-slate-600">Short codes: [A–Z, a–z, 0–9], 6–8 chars.</span>
+      </div>
+    </footer>
+
+    <div id="toast-root" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+    <script src="/js/main.js" defer></script>
+  </body>
+</html>

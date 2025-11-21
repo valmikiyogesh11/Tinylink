@@ -1,0 +1,14 @@
+<% layout('layout') -%>
+
+<section class="flex flex-col items-center justify-center py-10 gap-4 text-center">
+  <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-800 border border-slate-700 text-slate-300 text-xl">
+    404
+  </div>
+  <div class="space-y-2 max-w-md">
+    <h1 class="text-xl font-semibold text-slate-50">Not found</h1>
+    <p class="text-sm text-slate-400">
+      <%= message || 'We could not find what you were looking for.' %>
+    </p>
+  </div>
+  <a href="/" class="btn-primary text-xs">Back to dashboard</a>
+</section>
